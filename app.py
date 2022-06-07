@@ -8,7 +8,7 @@ key = Fernet.generate_key()
 
 host = 'localhost'
 port = 5432
-dbname = 'user1'
+dbname = 'prueba'
 user = 'postgres'
 password = 'mysecretpassword'
 
