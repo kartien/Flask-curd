@@ -29,7 +29,11 @@ userForm.addEventListener('submit', async e => {
         })
     })
     const data = await response.json();
-    console.log(data);
+   
+    users.unshift(data);
+    
+    renderUser(users);
+
     userForm.reset();
 });
 
@@ -54,7 +58,7 @@ function renderUser(users){
             <p>${user.email}</p>
             <p class="text-truncate">${user.password}</p>
         `
-        console.log(userItem);
+        //console.log(userItem);
         userList.append(userItem)
     })
 
@@ -62,4 +66,3 @@ function renderUser(users){
 
 }
 
-console.log("Hello")
