@@ -57,13 +57,13 @@ def delete_user(id):
     conn =get_connection()
     cur = conn.cursor(cursor_factory=extras.RealDictCursor)
     
-    cur.execute('DELETE FROM users WHERE id = %s RETURNING * ', (id))
+    cur.execute('DELETE FROM users WHERE id = %s RETURNING * ', (id, ))
     user = cur.fetchone
     
     conn.commit()
-    
-    conn.close()
     cur.close()
+    conn.close()
+    
     
     if user is None:
         return jsonify({'message': 'User is not found'}), 404

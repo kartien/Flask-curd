@@ -49,16 +49,28 @@ function renderUser(users){
             <header class="d-flex justify-content-between align-items-center" >
             <h3>${user.username}</h3>
             <div>
-                <button class="btn btn-danger btn-sm">
+                <button class="btn-delete btn btn-danger btn-sm">
                 <span class="material-icons">&#xe872;</span></button> <!--delete-->
-                <button class="btn btn-primary btn-sm">
+                <button class="btn-edit btn btn-primary btn-sm">
                 <span class="material-icons">&#xe3c9;</span></button> <!--edit-->
             </div>
             </header>
             <p>${user.email}</p>
             <p class="text-truncate">${user.password}</p>
         `
-        //console.log(userItem);
+
+        const btnDelete = userItem.querySelector('.btn-delete')
+
+        btnDelete.addEventListener('click', async () =>{
+            const response = await fetch(`/api/users/${user.id}`, {
+                method: 'DELETE',
+            })
+            const data = await response.json()
+
+            users = users.filter(user => user.id !== data.id)
+            renderUser(user)
+        })
+
         userList.append(userItem)
     })
 
