@@ -1,6 +1,9 @@
 const userForm =  document.querySelector('#userForm')
 
 let users = []
+let edittinig = false
+let userId = null;
+
 
 window.addEventListener('DOMContentLoaded', async ()  => {
     const response = await fetch("api/users");
@@ -17,23 +20,39 @@ userForm.addEventListener('submit', async e => {
     const email = userForm['email'].value;
    
     
-    const response = await fetch('/api/users', {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json',
-       },
-        body: JSON.stringify({
-            username,
-            password,
-            email
+    if (!edittinig){
+        const response = await fetch('/api/users', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+           },
+            body: JSON.stringify({
+                username,
+                password,
+                email
+            })
         })
-    })
-    const data = await response.json();
-   
-    users.unshift(data);
-    
+        const data = await response.json();
+       
+        users.unshift(data);
+    }else{
+        const response = await fetch(`/api/users/${userId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                username,
+                password,
+                email,
+            }),
+        });
+        const updateUser = await response.json();
+        userse =  user.map(user => user.id === updateUser.id ? updateUser : user);
+        edittinig = false;
+        userId = null;
+    }
     renderUser(users);
-
     userForm.reset();
 });
 
@@ -70,6 +89,20 @@ function renderUser(users){
             users = users.filter(user => user.id !== data.id)
             renderUser(user)
         })
+
+        const btnEdit = userItem.querySelector('.btn-edit')
+
+        btnEdit.addEventListener('click', async e  => {
+            const response = await fetch(`/api/users/${user.id}`)
+            const data = await response.json()
+            
+            userForm["username"].value = data.username;
+            userForm["email"].value = data.email;
+
+            edittinig = true;
+            userId = data.id;
+        })
+
 
         userList.append(userItem)
     })
