@@ -18,7 +18,7 @@ sudo docker exec -it some-postgres bash
 psql -U your-user --password 
 
 # create data on postgres
-CREATE DATABASE <your-database>
+CREATE DATABASE <your-database>;
 ```
 # Screen the project 
 
